@@ -1,28 +1,39 @@
+#-------------------------------imports and get date from the web--------------------------------#
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# wrtie data to csv file
+### write data to csv file
+url = "https://www.espn.com/nba/standings/_/group/league"
+dfs = pd.read_html(
+    url
+)
+dfs[1].to_csv("orginal.csv")
 
+#-------------------------------condense data--------------------------------#
 
-# url = "https://www.espn.com/nba/standings/_/group/league"
-# dfs = pd.read_html(
-#     url
-# )
-# dfs[1].to_csv("standings.csv")
-
-
-# get home and away columns
-df = pd.read_csv("standings.csv")
+### get home and away columns
+df = pd.read_csv("orginal.csv")
 df = df.loc[:,["HOME", "AWAY"]]
 
-#make it into intergers
-for index, row in df.iterrows():
-    print(row)
+### make it into intergers
+df[['Home Wins', 'Home Losses']] = df["HOME"].str.split("-", expand = True)
+df[['Away Wins', 'Away Losses']] = df["AWAY"].str.split("-", expand = True)
 
+### add an home-road to see the difference
+# for home, road in df["Home Wins"],df["Away Wins"]:
+#     df[['Home-Road Wins More']] = df["Home Wins"] - int["Away Wins"]
 
-#make a graph
+df.to_csv("data.csv")
 
-#df = df[["Home", "Road"]].astype("int")
-#print(df.info())
-#df.plot(x = ["Home","Road"], y = "Win %")
-#plt.show()
+#-------------------------------make a graph--------------------------------#
+
+df = df[["Home Wins", "Away Wins"]].astype("int")
+
+### this is a bar plot 
+df.plot( y = ["Home Wins","Away Wins"], kind = "bar")
+
+### this is a line plot
+# df.plot( y = ["Home Wins","Away Wins"])
+
+plt.show()
