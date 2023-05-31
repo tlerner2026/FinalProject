@@ -1,0 +1,30 @@
+                * --UTAHUtah Jazz
+0             y --PHXPhoenix Suns
+1       z --PHIPhiladelphia 76ers
+2            x --BKNBrooklyn Nets
+3           x --DENDenver Nuggets
+4              x --LACLA Clippers
+5          y --MILMilwaukee Bucks
+6         y --DALDallas Mavericks
+7      xp --LALLos Angeles Lakers
+8   x --PORPortland Trail Blazers
+9            y --ATLAtlanta Hawks
+10          x --NYNew York Knicks
+11              x --MIAMiami Heat
+12   pb --GSGolden State Warriors
+13      xp --MEMMemphis Grizzlies
+14         xp --BOSBoston Celtics
+15     xp --WSHWashington Wizards
+16         pb --INDIndiana Pacers
+17       pb --SASan Antonio Spurs
+18      pb --CHACharlotte Hornets
+19     e --NONew Orleans Pelicans
+20           e --CHIChicago Bulls
+21        e --SACSacramento Kings
+22         e --TORToronto Raptors
+23  e --MINMinnesota Timberwolves
+24     e --CLECleveland Cavaliers
+25   e --OKCOklahoma City Thunder
+26           e --ORLOrlando Magic
+27         e --DETDetroit Pistons
+28         e --HOUHouston Rockets

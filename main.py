@@ -6,17 +6,22 @@ import matplotlib.pyplot as plt
 import math
 import matplotlib.patches as mpatches
 
-## write data to csv file
-url = "https://www.espn.com/nba/standings/_/group/league"
+### write data to csv file
+year = input("What year do you want? 2016 to 2023: ")
+url = f"https://www.espn.com/nba/standings/_/season/{year}/group/league"
 dfs = pd.read_html(
     url
 )
-dfs[1].to_csv("orginal.csv")
+
+### write the data to files
+with open("teams.txt", "w") as f:
+    f = f.write(str(dfs[0]))
+dfs[1].to_csv("orginaldata.csv")
 
 #-------------------------------condense data--------------------------------#
 
 ### get home and away columns
-df = pd.read_csv("orginal.csv")
+df = pd.read_csv("orginaldata.csv")
 df = df.loc[:,["HOME", "AWAY"]]
 
 ### make it into intergers
@@ -24,10 +29,10 @@ df[['Home Wins', 'Home Losses']] = df["HOME"].str.split("-", expand = True)
 df[['Away Wins', 'Away Losses']] = df["AWAY"].str.split("-", expand = True)
 
 ### write to file
-df.to_csv("data.csv")
+df.to_csv("newdata.csv")
 
 ### read fom file file
-df = pd.read_csv("data.csv")
+df = pd.read_csv("newdata.csv")
 df = df.loc[:,["Home Wins", "Away Wins"]]
 
 ### make the intergers into %
@@ -69,11 +74,25 @@ def average_line(value):
     return average
 
 ### write a list of teams
-teams = ["MIL", "BOS", "PHI", "DEN", "MEM", "CLE", "SAC", "NYK", "PHX", "BKN", "MIA", "LAC", "GSW", "LAL", "MIN", "NOP", "ATL", "TOR", "CHI", "OKC", "DAL", "UTA", "IND", "WAS", "ORL", "POR", "CHA", "HOU", "SAS", "DET"]
+teams = []
+with open("teams.txt", "r") as f:
+     all_teams = f.readlines()
+     for line in all_teams:
+        slice = line.index("-")
+        team = line[slice+2:slice+5]
+
+        if team == 'GSG':
+            team = 'GSW'
+        elif team == 'NON':
+            team = 'NOP'
+        elif team == 'NYN':
+            team = 'NYK'
+
+        teams.append(team)
 df["Teams"] = teams
 
 ### write to file
-df.to_csv("data.csv")
+df.to_csv("newdata.csv")
 
 #-------------------------------make a graph--------------------------------#
 
@@ -92,6 +111,7 @@ blue_patch = mpatches.Patch(color='blue', label='Away Win %')
 black_patch = mpatches.Patch(color='black', label='Home-Away Win %')
 ax.legend(handles=[red_patch, blue_patch, black_patch])
 ax.set_xlabel('Teams')
+plt.xticks(rotation = 90)
 ax.set_ylabel('Win %')
 ax.set_title('Importance of Home-Court in the NBA')
 
@@ -104,4 +124,9 @@ plt.plot(average_line("Away"), color = "blue", linestyle = "dashed", linewidth =
 plt.plot(average_line("Home-Away"), color = "black", linestyle = "dashed", linewidth = 2)
 plt.xlim(-0.5, 29.5)
 plt.tight_layout()
+
+### save the figure 
+# plt.savefig(f"graph_{year}.png")
+
+### show the plot
 plt.show()
